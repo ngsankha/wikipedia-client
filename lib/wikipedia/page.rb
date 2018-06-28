@@ -7,7 +7,7 @@ module Wikipedia
     def initialize(json)
       require 'json'
       @json = json
-      @data = RDL.type_cast(JSON.parse(json), "{ query: { pages: { k: { revisions: Array<String>, title: String, fullurl: String, editurl: String, extract: String, summary: String, categories: Array<{ title: String }>, links: Array<{ title: String }>, extlinks: Array<Hash<String, String>>, langlinks: Array<Hash<String, String>> } } } }", force: true)
+      @data = RDL.type_cast(JSON.parse(json, :symbolize_names=>true), "{ query: { pages: { k: { revisions: Array<String>, title: String, fullurl: String, editurl: String, extract: String, summary: String, categories: Array<{ title: String }>, links: Array<{ title: String }>, extlinks: Array<Hash<String, String>>, langlinks: Array<Hash<String, String>> } } } }", force: true)
     end
 
     def page
