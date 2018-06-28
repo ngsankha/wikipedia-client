@@ -1,4 +1,10 @@
 PATH
+  remote: ../rdl
+  specs:
+    rdl (2.1.0)
+      parser (~> 2.3, >= 2.3.1.4)
+
+PATH
   remote: .
   specs:
     wikipedia-client (1.10.0)
@@ -83,6 +89,7 @@ PLATFORMS
 DEPENDENCIES
   jeweler (~> 1.8)
   rake (~> 10.1)
+  rdl!
   rdoc (~> 4.0)
   rspec (~> 3.0)
   rubocop (~> 0.48)
@@ -90,4 +97,4 @@ DEPENDENCIES
   wikipedia-client!
 
 BUNDLED WITH
-   1.15.1
+   1.15.4

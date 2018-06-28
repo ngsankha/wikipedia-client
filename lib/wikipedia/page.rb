@@ -1,3 +1,5 @@
+require 'rdl'
+
 module Wikipedia
   class Page
     attr_reader :json
@@ -5,15 +7,15 @@ module Wikipedia
     def initialize(json)
       require 'json'
       @json = json
-      @data = JSON.parse(json)
+      @data = RDL.type_cast(JSON.parse(json), "{ query: { pages: { k: { revisions: Array<String>, title: String, fullurl: String, editurl: String, extract: String, summary: String, categories: Array<{ title: String }>, links: Array<{ title: String }>, extlinks: Array<Hash<String, String>>, langlinks: Array<Hash<String, String>> } } } }", force: true)
     end
 
     def page
-      @data['query']['pages'].values.first if @data['query']['pages']
+      @data[:query][:pages].values.first if @data[:query][:pages]
     end
 
     def content
-      page['revisions'].first['*'] if page['revisions']
+      page[:revisions].first['*'] if page[:revisions]
     end
 
     def sanitized_content
@@ -29,55 +31,55 @@ module Wikipedia
     end
 
     def title
-      page['title']
+      page[:title]
     end
 
     def fullurl
-      page['fullurl']
+      page[:fullurl]
     end
 
     def editurl
-      page['editurl']
+      page[:editurl]
     end
 
     def text
-      page['extract']
+      page[:extract]
     end
 
     def summary
-      page['extract'].split('==')[0].strip if page['extract'] && page['extract'] != ''
+      page[:extract].split('==')[0].strip if page[:extract] && page[:extract] != ''
     end
 
     def categories
-      page['categories'].map { |c| c['title'] } if page['categories']
+      page[:categories].map { |c| c[:title] } if page[:categories]
     end
 
     def links
-      page['links'].map { |c| c['title'] } if page['links']
+      page[:links].map { |c| c[:title] } if page[:links]
     end
 
     def extlinks
-      page['extlinks'].map { |c| c['*'] } if page['extlinks']
+      page[:extlinks].map { |c| c['*'] } if page[:extlinks]
     end
 
     def langlinks
-      Hash[page['langlinks'].collect { |c| [c['lang'], c['*']] }] if page['langlinks']
+      Hash[page[:langlinks].collect { |c| [c['lang'], c['*']] }] if page[:langlinks]
     end
 
     def images
-      page['images'].map { |c| c['title'] } if page['images']
+      page[:images].map { |c| c[:title] } if page[:images]
     end
 
     def image_url
-      page['imageinfo'].first['url'] if page['imageinfo']
+      page[:imageinfo].first[:url] if page[:imageinfo]
     end
 
     def image_thumburl
-      page['imageinfo'].first['thumburl'] if page['imageinfo']
+      page[:imageinfo].first[:thumburl] if page[:imageinfo]
     end
 
     def image_descriptionurl
-      page['imageinfo'].first['descriptionurl'] if page['imageinfo']
+      page[:imageinfo].first[:descriptionurl] if page[:imageinfo]
     end
 
     def image_urls
