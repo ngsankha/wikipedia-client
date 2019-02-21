@@ -1,1 +1,1 @@
-NODYNCHECK=1 bundle exec rspec spec/twitter/streaming
+NODYNCHECK=1 bundle exec rspec

@@ -1,1 +1,1 @@
-TYPECHECK=1 bundle exec rspec spec/twitter/streaming
+TYPECHECK=1 bundle exec rspec
