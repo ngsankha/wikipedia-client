@@ -19,7 +19,7 @@ module Wikipedia
     end
 
     def content
-      page[:revisions].first[:*] if page[:revisions]
+      RDL.type_cast(page[:revisions], 'Array<Hash<Symbol, String>>').first[:*] if page[:revisions]
     end
 
     def sanitized_content
@@ -35,43 +35,43 @@ module Wikipedia
     end
 
     def title
-      page[:title]
+      RDL.type_cast(page[:title], 'String')
     end
 
     def fullurl
-      page[:fullurl]
+      RDL.type_cast(page[:fullurl], 'String')
     end
 
     def editurl
-      page[:editurl]
+      RDL.type_cast(page[:editurl], 'String')
     end
 
     def text
-      page[:extract]
+      RDL.type_cast(page[:extract], 'String')
     end
 
     def summary
-      page[:extract].split('==')[0].strip if page[:extract] && page[:extract] != ''
+      RDL.type_cast(page[:extract], 'String').split('==')[0].strip if page[:extract] && page[:extract] != ''
     end
 
     def categories
-      page[:categories].map { |c| c[:title] } if page[:categories]
+      RDL.type_cast(page[:categories], 'Array<Hash<Symbol, String>>').map { |c| c[:title] } if page[:categories]
     end
 
     def links
-      page[:links].map { |c| c[:title] } if page[:links]
+      RDL.type_cast(page[:links], 'Array<Hash<Symbol, String>>').map { |c| c[:title] } if page[:links]
     end
 
     def extlinks
-      page[:extlinks].map { |c| c[:*] } if page[:extlinks]
+      RDL.type_cast(page[:extlinks], 'Array<Hash<Symbol, String>>').map { |c| c[:*] } if page[:extlinks]
     end
 
     def langlinks
-      Hash[page[:langlinks].collect { |c| [c[:lang], c[:*]] }] if page[:langlinks]
+      RDL.type_cast(Hash[RDL.type_cast(page[:langlinks], 'Array<Hash<Symbol, String>>').collect { |c| [c[:lang], c[:*]] }], 'Hash<String, String>') if page[:langlinks]
     end
 
     def images
-      page[:images].map { |c| c[:title] } if page[:images]
+      RDL.type_cast(page[:images], 'Array<Hash<Symbol, String>>').map { |c| c[:title] } if page[:images]
     end
 
     def image_url
