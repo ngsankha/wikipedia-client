@@ -2,12 +2,16 @@ require 'rdl'
 
 module Wikipedia
   class Page
-    attr_reader :json
+    extend RDL::Annotate
+    var_type :@json, 'String'
+    var_type :@data, "{ normalized: Array<Hash<Symbol, String>>, query: { pages: { k: { revisions: Array<Hash<Symbol, String>>, title: String, fullurl: String, editurl: String, extract: String, summary: String, categories: Array<{ title: String }>, links: Array<{ title: String }>, extlinks: Array<Hash<Symbol, String>>, langlinks: Array<Hash<Symbol, String>>, thumbnail: Array<Hash<Symbol, String>>, pageid: Integer, ns: String, images: Array<Hash<Symbol, String>> } } } }"
+
+    attr_reader :json, :data
 
     def initialize(json)
       require 'json'
       @json = json
-      @data = RDL.type_cast(JSON.parse(json, :symbolize_names=>true), "{ query: { pages: { k: { revisions: Array<String>, title: String, fullurl: String, editurl: String, extract: String, summary: String, categories: Array<{ title: String }>, links: Array<{ title: String }>, extlinks: Array<Hash<String, String>>, langlinks: Array<Hash<String, String>> } } } }", force: true)
+      @data = RDL.type_cast(JSON.parse(json, :symbolize_names=>true), '{ normalized: Array<Hash<Symbol, String>>, query: { pages: { k: { revisions: Array<Hash<Symbol, String>>, title: String, fullurl: String, editurl: String, extract: String, summary: String, categories: Array<{ title: String }>, links: Array<{ title: String }>, extlinks: Array<Hash<Symbol, String>>, langlinks: Array<Hash<Symbol, String>>, thumbnail: Array<Hash<Symbol, String>>, pageid: Integer, ns: String, images: Array<Hash<Symbol, String>> } } } }', force: true)
     end
 
     def page
@@ -15,7 +19,7 @@ module Wikipedia
     end
 
     def content
-      page[:revisions].first['*'] if page[:revisions]
+      page[:revisions].first[:*] if page[:revisions]
     end
 
     def sanitized_content
@@ -59,11 +63,11 @@ module Wikipedia
     end
 
     def extlinks
-      page[:extlinks].map { |c| c['*'] } if page[:extlinks]
+      page[:extlinks].map { |c| c[:*] } if page[:extlinks]
     end
 
     def langlinks
-      Hash[page[:langlinks].collect { |c| [c['lang'], c['*']] }] if page[:langlinks]
+      Hash[page[:langlinks].collect { |c| [c[:lang], c[:*]] }] if page[:langlinks]
     end
 
     def images
@@ -96,15 +100,15 @@ module Wikipedia
     end
 
     def main_image_url
-      page['thumbnail']['source'].sub(/\/thumb/, '').sub(/\/[^\/]*$/, '') if page['thumbnail']
+      page[:thumbnail][:source].sub(/\/thumb/, '').sub(/\/[^\/]*$/, '') if page[:thumbnail]
     end
 
     def main_image_thumburl
-      page['thumbnail']['source'] if page['thumbnail']
+      page[:thumbnail][:source] if page[:thumbnail]
     end
 
     def coordinates
-      page['coordinates'].first.values if page['coordinates']
+      page[:coordinates].first.values if page[:coordinates]
     end
 
     def raw_data
@@ -121,7 +125,7 @@ module Wikipedia
     end
 
     def templates
-      page['templates'].map { |c| c['title'] } if page['templates']
+      page[:templates].map { |c| c[:title] } if page[:templates]
     end
 
     # rubocop:disable Metrics/MethodLength

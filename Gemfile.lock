@@ -1,7 +1,10 @@
-PATH
-  remote: ../rdl
+GIT
+  remote: https://github.com/plum-umd/rdl.git
+  revision: 3d302bf655c49bb425d87e8c77c437b86eab6d11
+  branch: pldi-comp-types
   specs:
     rdl (2.1.0)
+      colorize
       parser (~> 2.3, >= 2.3.1.4)
 
 PATH
@@ -13,8 +16,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.5)
-    ast (2.3.0)
+    ast (2.4.0)
     builder (3.2.2)
+    colorize (0.8.1)
     diff-lcs (1.3)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
@@ -52,8 +56,8 @@ GEM
       multi_json (~> 1.0)
       multi_xml (~> 0.5)
       rack (~> 1.2)
-    parser (2.4.0.0)
-      ast (~> 2.2)
+    parser (2.5.3.0)
+      ast (~> 2.4.0)
     powerpack (0.1.1)
     rack (1.5.2)
     rainbow (2.2.2)
@@ -97,4 +101,4 @@ DEPENDENCIES
   wikipedia-client!
 
 BUNDLED WITH
-   1.15.4
+   1.17.1
