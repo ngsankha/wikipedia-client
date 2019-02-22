@@ -8,6 +8,7 @@ require 'json'
 puts "Type checking Wikipedia Gem methods..."
 
 # Type checked methods below
+## Methods located in ~/wikipedia-client/lib/wikipedia/page.rb
 RDL.type Wikipedia::Page, :initialize, '(String) -> self', wrap: false, typecheck: :later
 RDL.type Wikipedia::Page, :page, "() -> #{PAGE_HASH}", wrap: false, typecheck: :never
 RDL.type Wikipedia::Page, :content, '() -> String', wrap: false, typecheck: :later
